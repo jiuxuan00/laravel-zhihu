@@ -112,8 +112,8 @@ class User extends Model
 
     public function hasUsernameAndPassword()
     {
-        $username = Request::get('username');
-        $password = Request::get('password');
+        $username = rq('username');
+        $password = rq('password');
         /*1.检查用户名和密码是否为空*/
         if ($username && $password) {
             return [$username, $password];
