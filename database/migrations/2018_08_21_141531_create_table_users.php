@@ -19,7 +19,7 @@ class CreateTableUsers extends Migration
             $table->string('email',100)->unique()->nullable();
             $table->string('phone',50)->unique()->nullable();
             $table->string('password',255);
-            $table->text('intro')->unique();
+            $table->text('intro')->unique()->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ class CreateTableUsers extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::drop('users');
     }
 }
