@@ -11,6 +11,8 @@
 |
 */
 
+
+
 function rq($key=null, $default=null){
     if(!$key){
         return Request::all();
@@ -30,6 +32,10 @@ function question_ins(){
     return new App\Questions;
 }
 
+//Answers 实例
+function answer_ins(){
+    return new App\Answers;
+}
 
 
 Route::get('/', function () {
@@ -52,7 +58,7 @@ Route::get('api/logout',function (){
     return user_ins()->logout();
 });
 
-//创建问题 /api/question/ad?title=地球是不是圆的呢12222&id=1&desc=描述描述描述描述描述
+//创建问题 /api/question/add?title=地球是不是圆的呢12222&id=1&desc=描述描述描述描述描述
 Route::any('api/question/add',function (){
     return question_ins()->add();
 });
@@ -60,4 +66,24 @@ Route::any('api/question/add',function (){
 //修改问题 /api/question/change?title=地球是不是圆的呢12222&id=1&desc=描述描述描述描述描述
 Route::any('api/question/change',function (){
     return question_ins()->change();
+});
+
+//查看问题 /api/question/read?id=1
+Route::any('api/question/read',function (){
+    return question_ins()->read();
+});
+
+//删除问题
+Route::any('api/question/remove',function (){
+    return question_ins()->remove();
+});
+
+//回答问题
+Route::any('api/answer/add',function(){
+  return answer_ins()->add();
+});
+
+//查看回答问题
+Route::any('api/answer/read', function () {
+    return answer_ins()->read();
 });

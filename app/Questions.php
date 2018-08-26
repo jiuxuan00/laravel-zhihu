@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Questions extends Model
 {
+    protected $table = 'questions';
+    // public $timestamps = false;
+
     //新增
     public function add()
     {
@@ -76,5 +79,57 @@ class Questions extends Model
             return ['status' => 0, 'msg' => 'failed'];
         }
 
+    }
+
+    //查看
+    public function read()
+    {
+        $id = rq('id');
+        if($id){
+            return [
+                'status'=> 1,
+                'data' => $this->find($id)
+            ];
+        }
+
+        $limit = rq('limit') ?: 15;
+        $skip = (rq('page')?:1 - 1) * $limit;
+
+        return [
+            'status'=> 1,
+            'data' => $this->orderBy('updated_at')->limit($limit)->skip($skip)->get()
+        ];
+        
+
+    }
+
+    // 删除
+    public function remove()
+    {
+        //检查用户是否登录
+        if(!user_ins()->isLoginedIn())
+            return ['status'=>0, 'msg'=>'请登录'];
+
+
+        //检查传参中是否有id
+        if(!rq('id'))
+            return ['status'=>0, 'msg'=>'id错误'];
+
+
+        //检查问题是否存在
+        $question = $this->find(rq('id'));
+        if(!$question)
+            return ['status'=>0, 'msg'=>'删除的问题不存在'];
+
+        //检测当前用户是否有权限删除请求的问题
+        if(session('user_id') != $question->user_id)
+            return ['status'=>0, 'msg'=>'你没有权限删除此问题'];
+
+
+        if($question->delete()){
+            return ['status'=>1, 'msg'=>'删除的问题成功'];
+        }else {
+            return ['status'=>0, 'msg'=>'删除的问题失败'];
+        }
     }
 }

@@ -11,7 +11,7 @@ class User extends Model
 {
 
     protected $table = 'users';
-    public $timestamps = false;
+    // public $timestamps = false;
 
     //注册  http://192.168.1.188:7000/api/signup?username=qiuxi1&password=123456
     public function signUp()
@@ -88,7 +88,8 @@ class User extends Model
             session()->put('user_id', $user->id);
             return [
                 'status' => 1,
-                'id' => $user->id
+                'id' => $user->id,
+                'msg' => '登录成功'
             ];
         }
 
@@ -100,7 +101,7 @@ class User extends Model
         //请开工session
         session()->forget('username');
         session()->forget('user_id');
-        return ['status'=>1];
+        return ['status'=>1,'msg'=>'退出成功'];
     }
 
     //检测用户是否登录
