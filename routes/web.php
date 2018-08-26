@@ -37,6 +37,12 @@ function answer_ins(){
     return new App\Answers;
 }
 
+//comments 实例
+function cmoment_ins(){
+    return new App\Comments;
+}
+
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -86,4 +92,15 @@ Route::any('api/answer/add',function(){
 //查看回答问题
 Route::any('api/answer/read', function () {
     return answer_ins()->read();
+});
+
+
+Route::any('api/comment/add', function () {
+    return cmoment_ins()->add();
+});
+Route::any('api/comment/read', function () {
+    return cmoment_ins()->read();
+});
+Route::any('api/comment/remove', function () {
+    return cmoment_ins()->remove();
 });
