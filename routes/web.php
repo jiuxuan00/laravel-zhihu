@@ -10,9 +10,31 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+// 分页
+function paginate($page=1, $limit=15)
+{
+    $limit = $limit ?: 15;
+    $skip = ($page ? $page-1 : 0) * $limit;
+    return [$limit, $skip];
+}
+
+//
+function err($msg=null)
+{
+    return ['status'=>0, 'msg'=>$msg];
+}
+
+function suc($data_to_merge=null)
+{
+    // return ['status'=>1, 'data'=>$data];
+    $data = ['status'=>1];
+    if($data_to_merge)
+        $data = array_merge($data, $data_to_merge);
+    return $data;    
+}
 
 
-
+//请求参数
 function rq($key=null, $default=null){
     if(!$key){
         return Request::all();
@@ -64,6 +86,23 @@ Route::get('api/logout',function (){
     return user_ins()->logout();
 });
 
+//修改密码
+Route::any('api/user/change_password', function () {
+    return user_ins()->changePassword();
+});
+
+//找回密码
+Route::any('api/user/reset_password', function () {
+    return user_ins()->resetPassword();
+});
+// 获取用户信息
+Route::any('api/user/read', function () {
+    return user_ins()->read();
+});
+
+
+
+
 //创建问题 /api/question/add?title=地球是不是圆的呢12222&id=1&desc=描述描述描述描述描述
 Route::any('api/question/add',function (){
     return question_ins()->add();
@@ -99,9 +138,7 @@ Route::any('api/answer/vote', function () {
     return answer_ins()->vote();
 });
 
-
-
-
+//评论
 Route::any('api/comment/add', function () {
     return cmoment_ins()->add();
 });
@@ -111,3 +148,8 @@ Route::any('api/comment/read', function () {
 Route::any('api/comment/remove', function () {
     return cmoment_ins()->remove();
 });
+
+
+//
+Route::any('api/timeline', 'CommonController@timeline');
+

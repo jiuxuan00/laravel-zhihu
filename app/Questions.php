@@ -92,8 +92,10 @@ class Questions extends Model
             ];
         }
 
-        $limit = rq('limit') ?: 15;
-        $skip = (rq('page')?:1 - 1) * $limit;
+        // $limit = rq('limit') ?: 15;
+        // $skip = (rq('page')?:1 - 1) * $limit;
+
+        list($limit, $skip) = paginate(rq('page'), rq('limit'));
 
         return [
             'status'=> 1,
