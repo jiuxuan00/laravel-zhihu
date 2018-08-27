@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableAnswers extends Migration
+class CreateTableAnswersUser extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,17 @@ class CreateTableAnswers extends Migration
      */
     public function up()
     {
-        Schema::create('answers', function (Blueprint $table) {
+        Schema::create('answers_user', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('content');
             $table->unsignedInteger('user_id');
-            $table->unsignedInteger('question_id');
+            $table->unsignedInteger('answer_id');
+            $table->unsignedSmallInteger('vote'); //1是赞成票 2是反对票
             $table->timestamps();
-            
+
+            //外键
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('question_id')->references('id')->on('questions');
+            $table->foreign('answer_id')->references('id')->on('answers');
+            $table->unique(['user_id', 'answer_id', 'vote']); //同一个用户不能同时投赞成票和反对票
         });
     }
 
@@ -32,6 +34,6 @@ class CreateTableAnswers extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('answers');
+        Schema::dropIfExists('answers_user');
     }
 }

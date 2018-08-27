@@ -63,4 +63,49 @@ class Answers extends Model
             return ['status'=>0, 'msg'=>'你查看的问题不存在'];
 
     }
+
+    public function vote()
+    {
+        //检查是否登录
+        if (!user_ins()->isLoginedIn()) return ['status'=>0, 'msg'=>'请登录'];
+
+        //检测是否有id或vote
+        if(!rq('id') || !rq('vote'))
+            return ['status'=>0, 'msg'=>'id和vote必传'];
+        
+        //检测问题是否存在
+        $answer = $this->find(rq('id'));
+        if(!$answer) return ['status'=>0, 'msg'=>'问题不存在'];
+        
+        /*1.赞成 2.反对 3.清空    */
+        // $vote = rq('vote');
+        // if ($vote != 1 && $vote !=2 && $vote != 3) 
+        //     return ['status' => 0, 'msg' => 'invalid vote'];
+        // if ($vote == 3) 
+        //     return ['status' => 1];
+
+        //检查此用户是否在相同问题下投过票
+        $vote = $answer->users()
+            ->newPivotStatement()
+            ->where('user_id', session('user_id'))
+            ->where('answer_id', rq('id'))
+            ->delete();
+    
+        //在连接表中增加数据
+        $answer
+            ->users()
+            ->attach(session('user_id'), ['vote' => rq('vote')]);
+
+        return ['status'=>1,'msg'=>'成功'];
+    }
+
+    //多对多
+    public function users ()
+    {
+        //一个回复对应多个用户
+        return $this
+            ->belongsToMany('App\User','answers_user','answer_id','user_id') //默认只有2个表的主键值
+            ->withPivot('vote') //如果有其他字段需要用withPivot绑定
+            ->withTimestamps(); //answers和users表只要有改动就更新时间
+    }
 }

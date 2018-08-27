@@ -94,6 +94,13 @@ Route::any('api/answer/read', function () {
     return answer_ins()->read();
 });
 
+//
+Route::any('api/answer/vote', function () {
+    return answer_ins()->vote();
+});
+
+
+
 
 Route::any('api/comment/add', function () {
     return cmoment_ins()->add();

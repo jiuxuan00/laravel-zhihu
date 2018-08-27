@@ -13,7 +13,7 @@ class User extends Model
     protected $table = 'users';
     // public $timestamps = false;
 
-    //注册  http://192.168.1.188:7000/api/signup?username=qiuxi1&password=123456
+    //注册
     public function signUp()
     {
         $check = $this->hasUsernameAndPassword();
@@ -59,7 +59,7 @@ class User extends Model
 
     }
 
-    //登录 http://192.168.1.188:7000/api/login?username=qiuxi1&password=123456
+    //登录
     public function login()
     {
         // 判断输入是否正确
@@ -123,4 +123,12 @@ class User extends Model
         }
     }
 
+    //多对多的关系
+    public function answers()
+    {
+        return $this
+            ->belongsToMany('App\User')
+            ->withPivot('vote')
+            ->withTimestamps(); 
+    }
 }
