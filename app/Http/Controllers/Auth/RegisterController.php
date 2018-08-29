@@ -82,7 +82,7 @@ class RegisterController extends Controller
             'url'  => route('email.verify', ['token' => $user->confirmation_token]),
             'name' => $user->name
         ];
-        $template = new SendCloudTemplate('test_template', $data);
+        $template = new SendCloudTemplate('zhihu_app_isAvtive', $data);
 
         Mail::raw($template, function ($message) use ($user) {
             $message->from('117898271@11.com', 'Laravel');
