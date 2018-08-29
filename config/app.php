@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'Laravel',
+    'name' => '知乎',
 
     /*
     |--------------------------------------------------------------------------
@@ -180,7 +180,7 @@ return [
 
         //发送邮件
         Naux\Mail\SendCloudServiceProvider::class,
-
+        Laracasts\Flash\FlashServiceProvider::class,
     ],
 
     /*

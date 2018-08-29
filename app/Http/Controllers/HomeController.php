@@ -23,6 +23,8 @@ class HomeController extends Controller
      */
     public function index()
     {
+        //登录成功 跳转的首页
         return view('home');
     }
+
 }

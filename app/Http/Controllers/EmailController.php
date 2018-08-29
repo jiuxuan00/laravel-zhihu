@@ -16,6 +16,7 @@ class EmailController extends Controller
 
         //验证是否存在此账号
         if(is_null($user)){
+            flash('邮箱验证失败','danger');
             return redirect('/');
         }
 
@@ -25,6 +26,7 @@ class EmailController extends Controller
         $user->save();
 
         Auth::login($user);
+        flash('登录成功','success');
         return redirect('/home');
     }
 }
