@@ -181,6 +181,9 @@ return [
         //发送邮件
         Naux\Mail\SendCloudServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,
+
+        //ueditor
+        Overtrue\LaravelUEditor\UEditorServiceProvider::class,
     ],
 
     /*
